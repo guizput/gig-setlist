@@ -11,6 +11,8 @@ const Songs = (props) => {
 
   const [totalDuration, setTotalDuration] = useState(0);
 
+  const [sortDisabled, setSortDisabled] = useState(true);
+
   const [create, setCreate] = useState(false);
 
   const supabase = props.supabase;
@@ -94,11 +96,12 @@ const Songs = (props) => {
   };
 
   return (
-    <div className="flex">
+    <div>
       <ReactSortable
         list={songs}
         setList={setSongs}
-        className="mb-20 w-[90%] p-4"
+        className="mb-20 p-4"
+        disabled={sortDisabled}
       >
         {songs.map((item) => (
           <div className="flex cursor-pointer border-b-2 border-dashed border-gray-300 py-2">
@@ -117,7 +120,6 @@ const Songs = (props) => {
           </div>
         ))}
       </ReactSortable>
-      <div className="w-[10%]"></div>
 
       <div className="fixed bottom-0 left-0 flex w-full items-center justify-between border-t-2 border-gray-300 bg-white p-4">
         <div>
@@ -127,6 +129,19 @@ const Songs = (props) => {
             className="flex w-full justify-center rounded-md bg-gray-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm disabled:bg-gray-50 disabled:text-gray-600"
           >
             Create Setlist
+          </button>
+        </div>
+
+        <div>
+          <button
+            onClick={() => setSortDisabled(!sortDisabled)}
+            className="flex w-full justify-center rounded-md border-2 border-gray-500 px-3 py-1.5 text-sm font-semibold leading-6 shadow-sm"
+          >
+            {sortDisabled ? (
+              <span className="text-gray-500">Sort</span>
+            ) : (
+              <span className="text-red-500">End sort</span>
+            )}
           </button>
         </div>
 
