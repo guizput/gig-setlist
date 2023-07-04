@@ -94,8 +94,12 @@ const Songs = (props) => {
   };
 
   return (
-    <div>
-      <ReactSortable list={songs} setList={setSongs} className="mb-20 p-4">
+    <div className="flex h-full">
+      <ReactSortable
+        list={songs}
+        setList={setSongs}
+        className="mb-20 w-[90%] p-4"
+      >
         {songs.map((item) => (
           <div className="flex cursor-pointer border-b-2 border-dashed border-gray-300 py-2">
             <input
@@ -113,6 +117,7 @@ const Songs = (props) => {
           </div>
         ))}
       </ReactSortable>
+      <div className="h-full w-[10%] bg-gray-200"></div>
 
       <div className="fixed bottom-0 left-0 flex w-full items-center justify-between border-t-2 border-gray-300 bg-white p-4">
         <div>
