@@ -1,0 +1,107 @@
+import { useEffect, useState } from "react";
+
+import { Link } from "react-router-dom";
+
+const List = ({ supabase }) => {
+  const [setlists, setSetlists] = useState([]);
+
+  useEffect(() => {
+    getSetlists();
+  }, []);
+
+  const getSetlists = async () => {
+    const { data } = await supabase
+
+      .from("setlists")
+
+      .select()
+
+      .order("title", { ascending: true });
+
+    setSetlists(data);
+  };
+
+  const getTotalDuration = (list) => {
+    return list.reduce((acc, curr) => acc + curr.duration, 0);
+  };
+
+  const timeDuration = (seconds) => {
+    let hours = 0;
+
+    while (seconds - 3600 >= 0) {
+      hours++;
+
+      seconds -= 3600;
+    }
+
+    let minutes = 0;
+
+    while (seconds - 60 >= 0) {
+      minutes++;
+
+      seconds -= 60;
+    }
+
+    String(hours).length < 2 ? (hours = "0" + hours) : hours;
+
+    String(minutes).length < 2 ? (minutes = "0" + minutes) : minutes;
+
+    String(seconds).length < 2 ? (seconds = "0" + seconds) : seconds;
+
+    return `${hours !== "00" ? hours + ":" : ""}${minutes}:${seconds}`;
+  };
+
+  return (
+    <ul className="p-4 mb-20">
+      {setlists.map((item, index) => (
+        <li
+          key={index}
+          className="flex py-3 border-b-2 border-gray-200 cursor-pointer ml-4"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="currentColor"
+            className="w-6 h-6"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M8.25 6.75h12M8.25 12h12m-12 5.25h12M3.75 6.75h.007v.008H3.75V6.75zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zM3.75 12h.007v.008H3.75V12zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm-.375 5.25h.007v.008H3.75v-.008zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z"
+            />
+          </svg>
+
+          <Link
+            className="flex justify-between items-center w-full ml-4 font-medium"
+            to={`/setlists/${item.id}`}
+          >
+            <span>{item.title}</span>
+
+            <div className="flex items-center">
+              {timeDuration(getTotalDuration(item.list))}
+
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="w-6 h-6 ml-4"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M8.25 4.5l7.5 7.5-7.5 7.5"
+                />
+              </svg>
+            </div>
+          </Link>
+        </li>
+      ))}
+    </ul>
+  );
+};
+
+export default List;
