@@ -102,8 +102,11 @@ const Songs = (props) => {
         delay={70}
         delayOnTouchOnly={true}
       >
-        {songs.map((item) => (
-          <div className="flex cursor-pointer border-b-2 border-dashed border-gray-300 py-2">
+        {songs.map((item, index) => (
+          <div
+            key={index}
+            className="flex cursor-pointer border-b-2 border-dashed border-gray-300 py-2"
+          >
             <input
               type="checkbox"
               className="peer mr-4"

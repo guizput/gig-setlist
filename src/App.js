@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import { createClient } from "@supabase/supabase-js";
+import { useState } from "react";
 
 import Nav from "./components/Nav";
 
@@ -10,6 +11,8 @@ import List from "./pages/List";
 
 import Setlist from "./pages/Setlist";
 
+import Auth from "./components/Auth";
+
 const supabase = createClient(
   "https://weljlectgfiojrteianr.supabase.co",
 
@@ -17,28 +20,34 @@ const supabase = createClient(
 );
 
 const App = () => {
+  const [auth, setAuth] = useState(false);
+
   return (
-    <div className="font-sans">
-      <BrowserRouter>
-        <Nav />
+    <>
+      <div className="font-sans">
+        {(auth && (
+          <BrowserRouter>
+            <Nav supabase={supabase} setAuth={setAuth} />
 
-        <Routes>
-          <Route path="/" element={<Home supabase={supabase} />}></Route>
+            <Routes>
+              <Route path="/" element={<Home supabase={supabase} />}></Route>
 
-          <Route
-            path="/setlists"
-            element={<List supabase={supabase} />}
-          ></Route>
+              <Route
+                path="/setlists"
+                element={<List supabase={supabase} />}
+              ></Route>
 
-          <Route
-            path="/setlists/:id"
-            element={<Setlist supabase={supabase} />}
-          ></Route>
+              <Route
+                path="/setlists/:id"
+                element={<Setlist supabase={supabase} />}
+              ></Route>
 
-          <Route path="*" element={<Home supabase={supabase} />}></Route>
-        </Routes>
-      </BrowserRouter>
-    </div>
+              <Route path="*" element={<Home supabase={supabase} />}></Route>
+            </Routes>
+          </BrowserRouter>
+        )) || <Auth supabase={supabase} setAuth={setAuth} />}
+      </div>
+    </>
   );
 };
 
