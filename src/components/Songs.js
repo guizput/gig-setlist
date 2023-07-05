@@ -99,7 +99,7 @@ const Songs = (props) => {
         list={songs}
         setList={setSongs}
         className="mb-20 p-4"
-        delay={500}
+        delay={70}
         delayOnTouchOnly={true}
       >
         {songs.map((item) => (
